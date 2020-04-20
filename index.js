@@ -50,6 +50,7 @@ io.on('connection', function(socket) {
 
     socket.on('joinRoom', function(data) {
         var roomno = data.roomno
+        player.roomno = roomno
         console.log("player joined room: "+roomno)
         socket.join(roomno)
         var playersInRoom = Object.keys(rooms[roomno].players).length;
@@ -94,6 +95,8 @@ io.on('connection', function(socket) {
 
     socket.on('disconnect', function() {
         console.log('A player has disconnected')
+        delete rooms[player.roomno].players[player.id];
+        delete rooms[player.roomno].sockets[player.id];
         delete players[player.id];
         delete sockets[player.id];
     })

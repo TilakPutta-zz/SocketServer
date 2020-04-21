@@ -54,12 +54,9 @@ io.on('connection', function(socket) {
         console.log("player joined room: "+roomno)
         socket.join(roomno)
         var playersInRoom = Object.keys(rooms[roomno].players).length;
-        console.log(playersInRoom);
         player.playerNumber = playersInRoom + 1;
         var data = "NUMP|"+rooms[roomno].numberOfPlayers+"|"+player.playerNumber+"!"+"SWHO|"
-        console.log(rooms[roomno].players);
         for (var p in rooms[roomno].players) {
-            console.log("Name: "+p.name);
             data += p.name + "|";
         }
         rooms[roomno].players[player.id] = player
@@ -89,6 +86,9 @@ io.on('connection', function(socket) {
                 break;
             case "C_DONE_MOV":
                 Broadcast(message.replace('C', 'S'));
+                break;
+            case "C_CANCEL_MOV":
+                Broadcast(message.replace("C_CANCEL_MOV", "S_CANCEL_MOV"));
                 break;
         }
     })
